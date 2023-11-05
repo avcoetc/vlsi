@@ -1,0 +1,21 @@
+library IEEE; 
+use IEEE.STD_LOGIC_1164.ALL; 
+use IEEE.STD_LOGIC_ARITH.ALL; 
+use IEEE.STD_LOGIC_UNSIGNED.ALL; 
+entity alu is 
+Port ( a,b : in STD_LOGIC_VECTOR (03 downto 0); 
+sel : in STD_LOGIC_VECTOR (02 downto 0); 
+y : out STD_LOGIC_VECTOR (03 downto 0)); 
+end alu; 
+architecture Behavioral of alu is 
+begin 
+With sel select 
+y<= a + b when "000", 
+a - b when "001", 
+a nand b when "010", 
+a and b when "011", 
+a or b when "100", 
+a xor b when "101", 
+a xnor b when "110", 
+a when others; 
+end Behavioral; 
