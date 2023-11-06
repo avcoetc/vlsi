@@ -1,0 +1,52 @@
+library IEEE; 
+use IEEE.STD_LOGIC_1164.ALL; 
+use IEEE.STD_LOGIC_arith.ALL; 
+use IEEE.STD_LOGIC_unsigned.ALL; 
+use IEEE.numeric_std.ALL; 
+ 
+entity UNI_SHIFT_3 is 
+     Port ( din : in  STD_LOGIC_VECTOR (3 downto 0); 
+           mod1 : in  STD_LOGIC_VECTOR (1 downto 0); 
+           clk : in  STD_LOGIC; 
+           rst : in  STD_LOGIC; 
+           dout : inout  STD_LOGIC_VECTOR (3 downto 0)); 
+end UNI_SHIFT_3; 
+ 
+architecture Behavioral of UNI_SHIFT_3 is 
+  
+signal MSBIN, LSBIN : std_logic;   --used to perform LF & Rt SISO 
+signal temp : std_logic_vector(3 downto 0);   --use for SIPO 
+ 
+begin 
+ 
+MSBIN<= din(3); 
+LSBIN<= din(0); 
+ 
+PROCESS(CLK, RST) 
+ 
+begin 
+if(rst='1') then 
+dout <= "0000"; 
+temp <= "0000"; 
+elsif (clk'event and clk ='1') then 
+ 
+case mod1 is  
+when "00" => 
+dout <= MSBIN & dout(3 downto 1);  --- SISO right shift 
+ 
+when "01" => 
+ 
+dout <= din;      ----PIPO 
+when "10" => 
+ 
+temp <= MSBIN & temp (3 downto 1); 
+dout<= temp;            -----SIPO 
+ 
+when "11" => 
+dout <= dout (2 downto 0) & LSBIN ; ---- SISO left shift  
+when others =>  
+dout <= "0000"; 
+end case; 
+end if ; 
+end process; 
+end Behavioral ;

@@ -1,0 +1,52 @@
+LIBRARY ieee; 
+USE ieee.std_logic_1164.ALL; 
+USE ieee.std_logic_unsigned.all; 
+USE ieee.numeric_std.ALL; 
+ENTITY test_vhd IS 
+END test_vhd; 
+ARCHITECTURE behavior OF test_vhd IS 
+COMPONENT main 
+PORT( 
+din: IN std_logic_vector(3 downto 
+0); 
+clk : IN std_logic; 
+rst: IN std_logic; 
+mod1: IN std_logic_vector(1 downto 
+0); 
+dout: OUT std_logic_vector(3 downto 
+0) 
+); 
+END COMPONENT; 
+SIGNAL clk : std_logic := '0'; 
+SIGNAL rst : std_logic := '0'; 
+SIGNAL din : std_logic_vector(3 downto 0) := (others=>'0'); 
+SIGNAL mod1 : std_logic_vector(1 downto 0) := (others=>'0'); --Outputs 
+SIGNAL dout : std_logic_vector(3 downto 0); 
+BEGIN  -- Instantiate the Unit Under Test (UUT) 
+uut: main PORT MAP( 
+din => din, 
+clk => clk, 
+rst => rst, 
+mod1 => mod1, 
+dout => dout 
+); 
+PROCESS 
+BEGIN 
+wait for 10 ns ; 
+clk<= not clk; 
+END PROCESS; 
+PROCESS 
+BEGIN 
+m<="11"; 
+d<="1001"; 
+load<='1'; 
+wait for 60 ns ; 
+load<='0'; 
+wait for 300 ns; 
+load<='1'; 
+m<="01"; 
+wait for 50 ns; 
+load<='0'; 
+wait; 
+END PROCESS; 
+END;
